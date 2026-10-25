@@ -514,3 +514,11 @@ ojgen/
 - ZIP không hỗ trợ ZIP64 (tổng < 4 GB).
 - Menu chính có 7 dạng bài cố định; module mới dùng qua CLI (hoặc tự thêm mục menu).
 - Chỉ hỗ trợ lời giải C++ (hoặc `.exe` đã biên dịch).
+
+## 15: Lưu ý về trình biên dịch
+- Vì được code bằng C++ 17, nên yêu cầu cần có MinGW-64 (hoặc Visual Studio) để có thể hoạt động.
+- Còn nếu muốn chạy thẳng app desktop, thì hãy chờ. Hiện phần mềm phải điều chỉnh mã nguồn sang C# (.NET) để có thể hoạt động mà ko cần trình biên dịch.
+## Nhà phát triển:
+- minhquackk: https://discord.com/users/1376201721872908359 (Người sáng tạo ra code/Admin)
+- thienthuongthienha_duyngadocton_: https://discord.com/users/1355382056586182656 (Coder C#/Moderator)
+- Nếu có lỗi j thì ping Moderator, đùng ping Admin (vì sẽ khá phiền), có j Moderator sẽ gửi về cho Admin.
