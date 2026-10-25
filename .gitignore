@@ -1,18 +1,17 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+# Chương trình đã build
+ojgen
+ojgen.exe
+*.o
+*.obj
 
-# Other files and folders
-.settings/
+# Dữ liệu test sinh ra (giữ lại thư mục output/)
+output/*
+!output/.gitkeep
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+# Cấu hình cá nhân (đường dẫn lời giải, timeout...)
+ojgen_settings.ini
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# Linh tinh
+*.tmp
+.DS_Store
+Thumbs.db

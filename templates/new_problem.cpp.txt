@@ -1,0 +1,93 @@
+// ============================================================================
+// MẪU MODULE MỚI CHO OJGEN
+// ----------------------------------------------------------------------------
+// Ví dụ này là một module hoàn chỉnh, build được: "pairs" - n cặp số (l, r)
+// với 1 <= l <= r <= maxR. Cách thêm vào ojgen:
+//
+//   1. Sao chép file này thành  src/problems/pairs.cpp  (đổi tên tùy ý).
+//   2. Sửa id(), title(), params(), validateConfig(), generate(), validateInput().
+//   3. Khai báo hàm tạo trong  src/include/problem_list.h :
+//        std::unique_ptr<Problem> makePairs();
+//   4. Đăng ký trong  src/problems/registry.cpp :
+//        v.push_back(makePairs());
+//   5. Build lại (build.bat / build.sh). Module xuất hiện trong  ojgen --list
+//      và dùng được ngay qua CLI:  ojgen --problem pairs --tests 20 --maxR 1000
+//      (Menu chính có các mục cố định 1-7; module mới dùng qua CLI, hoặc thêm
+//       một mục vào kMenuIds trong src/core/menu.cpp nếu muốn.)
+//
+// QUY TẮC
+//   - generate() trả về TOÀN BỘ nội dung một file input, mỗi dòng kết thúc '\n',
+//     các số cách nhau đúng một dấu cách (validateInput dùng splitInputLines).
+//   - Chỉ dùng rng (Rng) để sinh ngẫu nhiên, KHÔNG dùng rand()/std::random_device,
+//     để cùng seed luôn cho cùng bộ test.
+//   - validateInput() kiểm tra lại đúng định dạng và mọi giới hạn. ojgen gọi hàm
+//     này cho từng test vừa sinh; sai là báo lỗi ngay.
+//   - Thêm vài cấu hình của module vào src/core/selftest.cpp để tự kiểm tra.
+// ============================================================================
+#include <climits>
+
+#include "problem.h"
+#include "problem_list.h"
+
+namespace ojgen {
+namespace {
+
+class PairsProblem : public Problem {
+public:
+    std::string id() const override { return "pairs"; }  // tên dùng với --problem
+    std::string title() const override { return "Các cặp đoạn [l, r]"; }
+    std::string formatDescription() const override {
+        return "Dòng 1: n (số cặp).\n"
+               "n dòng tiếp: l r với 1 <= l <= r <= maxR.\n"
+               "Ví dụ:\n  2\n  3 7\n  1 1\n";
+    }
+    // Mỗi tham số: {khóa CLI, câu hỏi menu, kiểu, mặc định, min cho phép, max cho phép, mặc định chữ, ghi chú}
+    std::vector<ParamSpec> params() const override {
+        return {
+            {"minN", "Số cặp nhỏ nhất", ParamType::Int, 1, 1, 1000000, "", ""},
+            {"maxN", "Số cặp lớn nhất", ParamType::Int, 10, 1, 1000000, "", ""},
+            {"maxR", "Giá trị lớn nhất của r", ParamType::Int, 100, 1, LLONG_MAX, "", ""},
+        };
+    }
+    Error validateConfig(const Config& c) const override {
+        if (c.i("minN") > c.i("maxN")) return "minN phải <= maxN.";
+        return "";
+    }
+    std::string generate(Rng& rng, const Config& c) const override {
+        ll n = rng.range(c.i("minN"), c.i("maxN"));
+        std::string s;
+        appendLL(s, n);
+        s += '\n';
+        for (ll i = 0; i < n; ++i) {
+            ll l = rng.range(1, c.i("maxR"));
+            ll r = rng.range(l, c.i("maxR"));
+            appendLL(s, l);
+            s += ' ';
+            appendLL(s, r);
+            s += '\n';
+        }
+        return s;
+    }
+    Error validateInput(const std::string& in, const Config& c) const override {
+        std::vector<std::vector<std::string>> L;
+        if (auto e = splitInputLines(in, L); !e.empty()) return e;
+        if (L[0].size() != 1) return "Dòng 1 phải chứa n.";
+        ll n;
+        if (auto e = readIntToken(L[0][0], c.i("minN"), c.i("maxN"), "n", n); !e.empty()) return e;
+        if (static_cast<ll>(L.size()) != n + 1) return "Số dòng khác n + 1.";
+        for (ll i = 1; i <= n; ++i) {
+            const auto& t = L[static_cast<size_t>(i)];
+            if (t.size() != 2) return "Dòng " + std::to_string(i + 1) + " phải có 2 số.";
+            ll l, r;
+            if (auto e = readIntToken(t[0], 1, c.i("maxR"), "l", l); !e.empty()) return e;
+            if (auto e = readIntToken(t[1], l, c.i("maxR"), "r", r); !e.empty()) return e;
+        }
+        return "";
+    }
+};
+
+}  // namespace
+
+std::unique_ptr<Problem> makePairs() { return std::make_unique<PairsProblem>(); }
+
+}  // namespace ojgen

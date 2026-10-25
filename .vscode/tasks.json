@@ -1,0 +1,51 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "ojgen: Build",
+            "type": "shell",
+            "command": "./build.sh",
+            "windows": { "command": ".\\build.bat" },
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": ["$gcc"],
+            "presentation": { "reveal": "always", "clear": true }
+        },
+        {
+            "label": "ojgen: Mở menu",
+            "type": "shell",
+            "command": "./ojgen",
+            "windows": { "command": ".\\ojgen.exe" },
+            "options": { "cwd": "${workspaceFolder}" },
+            "dependsOn": "ojgen: Build",
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "focus": true, "panel": "dedicated", "clear": true }
+        },
+        {
+            "label": "ojgen: Tự kiểm tra (--selftest)",
+            "type": "shell",
+            "command": "./ojgen --selftest",
+            "windows": { "command": ".\\ojgen.exe --selftest" },
+            "options": { "cwd": "${workspaceFolder}" },
+            "dependsOn": "ojgen: Build",
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "ojgen: Kiểm thử đầy đủ (tests/run_tests.sh)",
+            "type": "shell",
+            "command": "bash tests/run_tests.sh",
+            "options": { "cwd": "${workspaceFolder}" },
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "ojgen: Sinh test cho file đang mở (custom)",
+            "type": "shell",
+            "command": "./ojgen --problem custom --tests 20 --solution \"${file}\"",
+            "windows": { "command": ".\\ojgen.exe --problem custom --tests 20 --solution \"${file}\"" },
+            "options": { "cwd": "${workspaceFolder}" },
+            "problemMatcher": []
+        }
+    ]
+}
