@@ -1,17 +1,11 @@
-# Chương trình đã build
 ojgen
 ojgen.exe
 *.o
 *.obj
-
-# Dữ liệu test sinh ra (giữ lại thư mục output/)
 output/*
 !output/.gitkeep
-
-# Cấu hình cá nhân (đường dẫn lời giải, timeout...)
 ojgen_settings.ini
-
-# Linh tinh
 *.tmp
 .DS_Store
 Thumbs.db
+\.vscode
