@@ -30,6 +30,7 @@
 12. [Cấu trúc project](#12-cấu-trúc-project)
 13. [Kiểm thử](#13-kiểm-thử)
 14. [Lưu ý an toàn và giới hạn đã biết](#14-lưu-ý-an-toàn-và-giới-hạn-đã-biết)
+15. [Lưu ý về trình biên dịch](#15-lưu-ý-về-trình-biên-dịch)
 
 ---
 
