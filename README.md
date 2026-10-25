@@ -1,4 +1,4 @@
-# ojgen — Công cụ sinh test cho bài lập trình thi đấu
+# OJGEN — Công cụ sinh test cho bài lập trình thi đấu
 
 `ojgen` sinh bộ test (`test01.inp`, `test01.out`, ...) cho các bài lập trình thi đấu (OJ):
 
